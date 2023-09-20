@@ -28,14 +28,14 @@ void	addTask(){
 
 
 		// Prompt for the deadline
-        	printf("	Enter the year for the deadline: ");
-        	scanf("%d", &Deadline[TaskNumbre][0]);
-        	printf("	Enter the month for the deadline: ");
-        	scanf("%d", &Deadline[TaskNumbre][1]);
-        	printf("	Enter the day for the deadline: ");
-        	scanf("%d", &Deadline[TaskNumbre][2]);
-        
-        	TaskNumbre++;
+		printf("	Enter the year for the deadline: ");
+		scanf("%d", &Deadline[TaskNumbre][0]);
+		printf("	Enter the month for the deadline: ");
+		scanf("%d", &Deadline[TaskNumbre][1]);
+		printf("	Enter the day for the deadline: ");
+		scanf("%d", &Deadline[TaskNumbre][2]);
+
+		TaskNumbre++;
 
 	}else {
 		printf("le nombre maximum de données a été atteint. \n");
