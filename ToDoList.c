@@ -76,7 +76,7 @@ int main() {
         printf("	6. Quitter\n");
         printf("	_____Entrez votre choix_____ : ");
         scanf("%d", &choice);
-      //  clearBuffer();
+      
         
         switch (choice) {
             case 1:
