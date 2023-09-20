@@ -60,6 +60,44 @@ void displayAllTasks() {
     }
 }
 
+void sortByTitle() {
+    if (TaskNumbre <= 1) {
+        printf("Nothing to sort.\n");
+        return;
+    }
+
+    // Bubble sort algorithm for sorting tasks by title
+    for (int i = 0; i < TaskNumbre - 1; i++) {
+        for (int j = 0; j < TaskNumbre - i - 1; j++) {
+            // Compare the titles of tasks at positions j and j+1
+            if (strcmp(TitelTask[j], TitelTask[j + 1]) > 0) {
+                // Swap task names, titles, descriptions, and deadlines
+                char temp[MAX_TITLE_LENGTH];
+                strcpy(temp, TaskName[j]);
+                strcpy(TaskName[j], TaskName[j + 1]);
+                strcpy(TaskName[j + 1], temp);
+
+                strcpy(temp, TitelTask[j]);
+                strcpy(TitelTask[j], TitelTask[j + 1]);
+                strcpy(TitelTask[j + 1], temp);
+
+                strcpy(temp, Description[j]);
+                strcpy(Description[j], Description[j + 1]);
+                strcpy(Description[j + 1], temp);
+
+                int tempDeadline[3];
+                for (int k = 0; k < 3; k++) {
+                    tempDeadline[k] = Deadline[j][k];
+                    Deadline[j][k] = Deadline[j + 1][k];
+                    Deadline[j + 1][k] = tempDeadline[k];
+                }
+            }
+        }
+    }
+
+    printf("Tasks sorted by title.\n");
+}
+
 
 
 
@@ -86,7 +124,7 @@ int main() {
                 displayAllTasks();
                 break;
             case 3:
-               // sortByTitle();
+                sortByTitle();
                 break;
             case 4:
               //  sortByDeadline();
