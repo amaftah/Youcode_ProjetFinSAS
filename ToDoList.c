@@ -49,14 +49,14 @@ void displayAllTasks() {
         return;
     }
 
-    printf("\n------------------ Task List ------------------\n");
+    printf("\n		------------------ Task List ------------------\n");
     for (int i = 0; i < TaskNumbre; i++) {
-        printf("Task %d:\n", i + 1);
-        printf("Name: %s\n", TaskName[i]);
-        printf("Title: %s\n", TitelTask[i]);
-        printf("Description: %s\n", Description[i]);
-        printf("Deadline: %d-%02d-%02d\n", Deadline[i][0], Deadline[i][1], Deadline[i][2]);
-        printf("----------------------------------------------\n");
+        printf(		"Task %d:\n", i + 1);
+        printf(		"Name: %s\n", TaskName[i]);
+        printf(		"Title: %s\n", TitelTask[i]);
+        printf(		"Description: %s\n", Description[i]);
+        printf(		"Deadline: %d-%02d-%02d\n", Deadline[i][0], Deadline[i][1], Deadline[i][2]);
+        printf("	----------------------------------------------\n");
     }
 }
 
