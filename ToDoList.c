@@ -127,10 +127,8 @@ int main() {
                 sortByTitle();
                 break;
             case 4:
-              //  sortByDeadline();
                 break;
             case 5:
-               // displayTasksWithinThreeDays();
                 break;
             case 6:
                 printf("Au revoir !\n");
