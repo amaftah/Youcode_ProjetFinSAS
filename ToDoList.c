@@ -1,142 +1,127 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #define MAX_TASKS 100
 #define MAX_TITLE_LENGTH 50
 #define MAX_DESCRIPTION_LENGTH 200
 
-// Arrays to strore data
-char TaskName[MAX_TASKS][50];
-char TitelTask[MAX_TITLE_LENGTH][50];
-char Description[MAX_DESCRIPTION_LENGTH][100];
-int Deadline[MAX_TASKS][3];
+struct Date {
+    int year;
+    int month;
+    int day;
+};
 
-int TaskNumbre = 0;
+struct Task {
+    char name[MAX_TITLE_LENGTH];
+    char title[MAX_TITLE_LENGTH];
+    char description[MAX_DESCRIPTION_LENGTH];
+    struct Date deadline;
+};
 
-//Function to add Task
-void	addTask(){
-	if(TaskNumbre < MAX_TASKS && TaskNumbre < MAX_TITLE_LENGTH && TaskNumbre  < MAX_DESCRIPTION_LENGTH){
+struct Task tasks[MAX_TASKS];
+int taskCount = 0;
 
-		printf("	Entrez le nom du task : ");
-		scanf("%s" , TaskName[TaskNumbre]);
-		printf("	Entrez le titre du task : ");
-		scanf("%s" , TitelTask[TaskNumbre]);
-		printf("	Entrez une discription du task : ");
-		scanf("%s" , Description[TaskNumbre]);
-
-
-		// Prompt for the deadline
-		printf("	Enter the year for the deadline: ");
-		scanf("%d", &Deadline[TaskNumbre][0]);
-		printf("	Enter the month for the deadline: ");
-		scanf("%d", &Deadline[TaskNumbre][1]);
-		printf("	Enter the day for the deadline: ");
-		scanf("%d", &Deadline[TaskNumbre][2]);
-
-		TaskNumbre++;
-
-	}else {
-		printf("le nombre maximum de données a été atteint. \n");
-	}
+struct Date enterDate() {
+    struct Date date;
+    printf("Entrez l'année : ");
+    scanf("%d", &date.year);
+    printf("Entrez le mois : ");
+    scanf("%d", &date.month);
+    printf("Entrez le jour : ");
+    scanf("%d", &date.day);
+    return date;
 }
-//Display Function
+
+void addTask() {
+    if (taskCount < MAX_TASKS) {
+        struct Task newTask;
+
+        printf("Entrez le nom de la tâche : ");
+        scanf("%s", newTask.name);
+        printf("Entrez le titre de la tâche : ");
+        scanf("%s", newTask.title);
+        printf("Entrez la description de la tâche : ");
+        scanf("%s", newTask.description);
+
+        printf("Entrez la date limite de la tâche :\n");
+        newTask.deadline = enterDate();
+
+        tasks[taskCount] = newTask;
+        taskCount++;
+    } else {
+        printf("Le nombre maximum de tâches a été atteint.\n");
+    }
+}
+
+void displayDate(struct Date date) {
+    printf("%d-%02d-%02d", date.year, date.month, date.day);
+}
 
 void displayAllTasks() {
-    if (TaskNumbre == 0) {
-        printf("No tasks to display.\n");
-        return;
-    }
-
-    printf("\n		------------------ Task List ------------------\n");
-    for (int i = 0; i < TaskNumbre; i++) {
-        printf("		Task %d:\n", i + 1);
-        printf("		Name: %s\n", TaskName[i]);
-        printf("		Title: %s\n", TitelTask[i]);
-        printf("		Description: %s\n", Description[i]);
-        printf("		Deadline: %d-%02d-%02d\n", Deadline[i][0], Deadline[i][1], Deadline[i][2]);
-        printf("		----------------------------------------------\n");
-    }
-}
-
-void sortByTitle() {
-    if (TaskNumbre <= 1) {
-        printf("Nothing to sort.\n");
-        return;
-    }
-
-    // Bubble sort algorithm for sorting tasks by title
-    for (int i = 0; i < TaskNumbre - 1; i++) {
-        for (int j = 0; j < TaskNumbre - i - 1; j++) {
-            // Compare the titles of tasks at positions j and j+1
-            if (strcmp(TitelTask[j], TitelTask[j + 1]) > 0) {
-                // Swap task names, titles, descriptions, and deadlines
-                char temp[MAX_TITLE_LENGTH];
-                strcpy(temp, TaskName[j]);
-                strcpy(TaskName[j], TaskName[j + 1]);
-                strcpy(TaskName[j + 1], temp);
-
-                strcpy(temp, TitelTask[j]);
-                strcpy(TitelTask[j], TitelTask[j + 1]);
-                strcpy(TitelTask[j + 1], temp);
-
-                strcpy(temp, Description[j]);
-                strcpy(Description[j], Description[j + 1]);
-                strcpy(Description[j + 1], temp);
-
-                int tempDeadline[3];
-                for (int k = 0; k < 3; k++) {
-                    tempDeadline[k] = Deadline[j][k];
-                    Deadline[j][k] = Deadline[j + 1][k];
-                    Deadline[j + 1][k] = tempDeadline[k];
-                }
-            }
+    if (taskCount == 0) {
+        printf("Aucune tâche à afficher.\n");
+    } else {
+        printf("\n--- Liste des tâches ---\n");
+        for (int i = 0; i < taskCount; i++) {
+            printf("Tâche %d :\n", i + 1);
+            printf("Nom : %s\n", tasks[i].name);
+            printf("Titre : %s\n", tasks[i].title);
+            printf("Description : %s\n", tasks[i].description);
+            printf("Date limite : ");
+            displayDate(tasks[i].deadline);
+            printf("\n-------------------------\n");
         }
     }
-
-    printf("Tasks sorted by title.\n");
 }
 
-
-
+void deleteTask(int index) {
+    if (index >= 0 && index < taskCount) {
+        for (int i = index; i < taskCount - 1; i++) {
+            tasks[i] = tasks[i + 1];
+        }
+        taskCount--;
+        printf("Tâche supprimée avec succès.\n");
+    } else {
+        printf("Index de tâche invalide.\n");
+    }
+}
 
 int main() {
     int choice;
-    
+
     do {
-        printf("\n	--------------------------------Menu--------------------------- :\n");
-        printf("	1. Ajouter une nouvelle tâche\n");
-        printf("	2. Afficher la liste de toutes les tâches\n");
-        printf("	3. Trier les tâches par titre\n");
-        printf("	4. Trier les tâches par deadline\n");
-        printf("	5. Afficher les tâches dont le deadline est dans 3 jours ou moins\n");
-        printf("	6. Quitter\n");
-        printf("	_____Entrez votre choix_____ : ");
+        printf("\n-- Menu --\n");
+        printf("1. Ajouter une tâche\n");
+        printf("2. Afficher toutes les tâches\n");
+        printf("3. Supprimer une tâche\n");
+        printf("4. Quitter\n");
+        printf("Votre choix : ");
         scanf("%d", &choice);
-      
-        
+
         switch (choice) {
             case 1:
-              addTask();
+                addTask();
                 break;
             case 2:
                 displayAllTasks();
                 break;
             case 3:
-                sortByTitle();
+                if (taskCount > 0) {
+                    int index;
+                    printf("Entrez l'indice de la tâche à supprimer : ");
+                    scanf("%d", &index);
+                    deleteTask(index - 1);
+                } else {
+                    printf("Aucune tâche à supprimer.\n");
+                }
                 break;
             case 4:
-                break;
-            case 5:
-                break;
-            case 6:
                 printf("Au revoir !\n");
                 break;
             default:
                 printf("Choix invalide. Veuillez réessayer.\n");
         }
-    } while (choice != 6);
+    } while (choice != 4);
 
     return 0;
 }
